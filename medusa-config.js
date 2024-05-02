@@ -21,16 +21,25 @@ try {
   dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME });
 } catch (e) {}
 
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_DATABASE = process.env.DB_DATABASE;
+
+const DATABASE_URL =
+  `postgres://${DB_USERNAME}:${DB_PASSWORD}` +
+  `@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+
 // CORS when consuming Medusa from admin
 const ADMIN_CORS =
-  process.env.ADMIN_CORS ||
-  "http://localhost:7000,http://localhost:7001,http://localhost:3000";
+  process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001";
 
 // CORS to avoid issues when consuming Medusa from a client
 const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 
-const DATABASE_URL =
-  process.env.DATABASE_URL || "postgres://localhost/medusa-starter-default";
+// const DATABASE_URL =
+//   process.env.DATABASE_URL || "postgres://localhost/medusa-starter-default";
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
@@ -48,7 +57,7 @@ const plugins = [
     /** @type {import('@medusajs/admin').PluginOptions} */
     options: {
       autoRebuild: true,
-      serve: process.env.NODE_ENV === "development",
+      // serve: process.env.NODE_ENV === "development",
       develop: {
         open: process.env.OPEN_BROWSER !== "false",
       },
@@ -76,9 +85,8 @@ const projectConfig = {
   jwtSecret: process.env.JWT_SECRET,
   cookieSecret: process.env.COOKIE_SECRET,
   store_cors: STORE_CORS,
-  database_url: DATABASE_URL,
+  database_url: process.env.DATABASE_URL,
   admin_cors: ADMIN_CORS,
-  redis_url: REDIS_URL,
   database_extra:
     process.env.NODE_ENV !== "development"
       ? {
