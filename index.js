@@ -1,6 +1,6 @@
 const express = require("express");
 const { GracefulShutdownServer } = require("medusa-core-utils");
-
+console.log("test");
 const loaders = require("@medusajs/medusa/dist/loaders/index").default;
 
 (async () => {
